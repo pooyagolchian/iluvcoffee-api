@@ -9,6 +9,8 @@ import { DataSource, DataSourceOptions } from 'typeorm';
         type: 'postgres',
         host: 'localhost',
         port: 5432,
+        username: 'postgres',
+        password: 'pass123',
       }).initialize(),
     },
   ],
