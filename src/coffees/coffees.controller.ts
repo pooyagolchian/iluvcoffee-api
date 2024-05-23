@@ -5,6 +5,7 @@ import {
   Get,
   Inject,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -15,7 +16,9 @@ import { UpdateCoffeeDto } from './dto/update-coffee.dto/update-coffee.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 import { REQUEST } from '@nestjs/core';
 import { Public } from 'src/common/decorator/public.decorator';
+import { ApiForbiddenResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('coffees')
 @Controller('coffees')
 export class CoffeesController {
   constructor(
@@ -24,6 +27,8 @@ export class CoffeesController {
   ) {
     console.log('Coffee controller creat!');
   }
+
+  @ApiForbiddenResponse({ description: 'Forbidden.' })
   @Public()
   @Get()
   findAll(@Query() paginationQuery: PaginationQueryDto) {
@@ -32,7 +37,7 @@ export class CoffeesController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: string) {
     return this.coffeesService.findOne(id);
   }
 
@@ -42,12 +47,15 @@ export class CoffeesController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
+  update(
+    @Param('id', ParseIntPipe) id: string,
+    @Body() updateCoffeeDto: UpdateCoffeeDto,
+  ) {
     return this.coffeesService.update(id, updateCoffeeDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseIntPipe) id: string) {
     return this.coffeesService.remove(id);
   }
 }
