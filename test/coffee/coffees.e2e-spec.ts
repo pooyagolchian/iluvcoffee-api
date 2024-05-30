@@ -24,7 +24,7 @@ describe('[Feature] Coffees - /coffees', () => {
     ),
   });
   let app: INestApplication;
-  let httpServer: any;
+  let httpServer: HttpServer;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
